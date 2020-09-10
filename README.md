@@ -1,6 +1,8 @@
 Ubertooth
 =========
 
+**NOTE** This version incorperates https://github.com/dor-zusman/ubertooth to allow larger BTLE advertisements (and fixes a small bug in that code). It also allows for the setting of transmission strenght and changes the advertisement type to ADV_NONCONN_IND. 
+
 Project Ubertooth is an open source wireless development platform
 suitable for Bluetooth experimentation. Ubertooth ships with a capable
 BLE (Bluetooth Smart) sniffer and can sniff some data from Basic Rate
