@@ -1078,7 +1078,7 @@ static void cc2400_tx_sync(uint32_t sync)
 	cc2400_set(SYNCH,   (sync >> 16) & 0xffff);
 
 	cc2400_set(FSDIV,   channel);
-	cc2400_set(FREND,   0b1011);    // amplifier level (-7 dBm, picked from hat)
+	cc2400_set(FREND,   tx_pkt.pa_level);    // amplifier level use the set one
 
 	if (modulation == MOD_BT_BASIC_RATE) {
 		cc2400_set(MDMCTRL, 0x0029);    // 160 kHz frequency deviation
@@ -1150,7 +1150,7 @@ void le_transmit(u32 aa, u8 len, u8 *data)
 	//      +--------------------> buffered mode
 
 	cc2400_set(FSDIV,   channel);
-	cc2400_set(FREND,   0b1011);    // amplifier level (-7 dBm, picked from hat)
+	cc2400_set(FREND,   tx_pkt.pa_level);    // amplifier level (-7 dBm, picked from hat)
 	cc2400_set(MDMCTRL, 0x0040);    // 250 kHz frequency deviation
 	cc2400_set(INT,     0x0010);    // FIFO_THRESHOLD: 16 bytes
 
@@ -1227,7 +1227,7 @@ void le_jam(void) {
 	//      +--------------------> buffered mode
 
 	// cc2400_set(FSDIV,   channel);
-	cc2400_set(FREND,   0b1011);    // amplifier level (-7 dBm, picked from hat)
+	cc2400_set(FREND,   tx_pkt.pa_level);    // amplifier level (-7 dBm, picked from hat)
 	cc2400_set(MDMCTRL, 0x0040);    // 250 kHz frequency deviation
 
 	while (!(cc2400_status() & XOSC16M_STABLE));
@@ -2342,7 +2342,7 @@ void bt_promisc_le() {
 void bt_slave_le() {
 	u32 calc_crc;
 	int i;
-	uint8_t adv_ind[32] = { 0x00, };
+	uint8_t adv_ind[255] = { 0x02, }; //ADV_NONCONN_IND
 	uint8_t adv_ind_len;
 
 	if (le_adv_len > LE_ADV_MAX_LEN) {
